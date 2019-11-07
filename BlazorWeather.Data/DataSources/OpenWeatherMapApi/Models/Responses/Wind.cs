@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace BlazorWeather.Data.DataSources.OpenWeatherMapApi
+namespace BlazorWeather.Data.DataSources.OpenWeatherMapApi.Models.Responses
 {
     [JsonObject]
     public class Wind
