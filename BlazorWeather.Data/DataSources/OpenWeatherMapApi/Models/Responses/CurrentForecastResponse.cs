@@ -22,6 +22,6 @@ namespace BlazorWeather.Data.DataSources.OpenWeatherMapApi.Models.Responses
         public string CityName { get; set; }
 
         [JsonProperty("dt")]
-        public DateTime Date { get; set; }
+        public long DateUtc { get; set; }
     }
 }

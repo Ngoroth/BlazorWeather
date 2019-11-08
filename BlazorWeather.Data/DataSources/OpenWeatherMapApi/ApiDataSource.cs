@@ -5,18 +5,15 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using BlazorWeather.Data.DataSources.OpenWeatherMapApi.Models.Responses;
-using BlazorWeather.Domain.Interfaces;
-using BlazorWeather.Domain.Models;
 
 namespace BlazorWeather.Data.DataSources.OpenWeatherMapApi
 {
-    public class ApiHandler : IWeatherForecastRepository
+    public class ApiDataSource
     {
         private readonly string appId;
         private readonly HttpClient weatherApiClient;
-        private ResponseConverter responseConverter;
 
-        public ApiHandler(string appId, string baseApiUrl = "http://api.openweathermap.org/")
+        public ApiDataSource(string appId, string baseApiUrl)
         {
             this.appId = appId;
 
@@ -24,19 +21,15 @@ namespace BlazorWeather.Data.DataSources.OpenWeatherMapApi
             {
                 BaseAddress = new Uri(baseApiUrl)
             };
-
-            this.responseConverter = new ResponseConverter();
         }
 
-        public async Task<WeatherForecast> GetWeatherForecastByCityNameAsync(string cityName)
+        public async Task<CurrentForecastResponse> GetWeatherForecastByCityNameAsync(string cityName)
         {
             var responseMessage = await this.weatherApiClient.GetAsync(this.createQueryString(cityName));
             //todo add status code validation
             var responseContentString = await responseMessage.Content.ReadAsStringAsync();
 
-            var currentForecast = JsonConvert.DeserializeObject<CurrentForecastResponse>(responseContentString);
-
-            return this.responseConverter.ConvertToWeatherForecast(currentForecast);
+            return JsonConvert.DeserializeObject<CurrentForecastResponse>(responseContentString);
         }
 
         private string createQueryString(string cityName)

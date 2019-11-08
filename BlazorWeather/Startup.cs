@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using BlazorWeather.Domain.Interfaces;
-using BlazorWeather.Domain;
+using BlazorWeather.Domain.OpenWeatherMapApi;
 
 namespace BlazorWeather
 {
@@ -24,7 +24,7 @@ namespace BlazorWeather
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
+            services.AddSingleton<IWeatherForecastService, OpenWeatherMapApiService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,7 +6,7 @@ namespace BlazorWeather.Data.DataSources.OpenWeatherMapApi.Models.Responses
     public class Wind
     {
         [JsonProperty("speed")]
-        public int Speed { get; set; }
+        public double Speed { get; set; }
 
         [JsonProperty("deg")]
         public int Direction { get; set; }
