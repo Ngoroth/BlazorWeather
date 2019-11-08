@@ -6,6 +6,6 @@ namespace BlazorWeather.Domain.Interfaces
 {
     public interface IWeatherForecastService
     {
-        Task<WeatherForecast[]> GetForecastsAsync();
+        Task<WeatherForecast[]> GetForecastsAsync(params string[] cities);
     }
 }

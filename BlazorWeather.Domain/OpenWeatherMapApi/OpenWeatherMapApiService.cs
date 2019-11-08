@@ -12,21 +12,19 @@ namespace BlazorWeather.Domain.OpenWeatherMapApi
     public class OpenWeatherMapApiService : IWeatherForecastService
     {
         private readonly ApiDataSource dataSource;
-        private readonly string[] myFavoriteCities;
         private readonly OpenWeatherMapApiResponseConverter apiResponseConverter;
 
-        public OpenWeatherMapApiService(ApiDataSource dataSource)
+        public OpenWeatherMapApiService()
         {
-            this.dataSource = dataSource;
-            this.myFavoriteCities = new[] { "Moscow", "Prague", "Venice", "Kyoto"};
+            this.dataSource = new ApiDataSource("e9a5eecb42d607c03d1c84867c26d193", "http://api.openweathermap.org/");
             this.apiResponseConverter = new OpenWeatherMapApiResponseConverter();
         }
 
-        public Task<WeatherForecast[]> GetForecastsAsync()
+        public Task<WeatherForecast[]> GetForecastsAsync(params string[] cities)
         {
             var forecastTasks = new List<Task<WeatherForecast>>();
 
-            foreach (var city in this.myFavoriteCities.AsEnumerable())
+            foreach (var city in cities.AsEnumerable())
             {
                 forecastTasks.Add(this.dataSource.GetWeatherForecastByCityNameAsync(city)
                     .ContinueWith(resp => this.apiResponseConverter.ConvertToWeatherForecast(resp.Result)));

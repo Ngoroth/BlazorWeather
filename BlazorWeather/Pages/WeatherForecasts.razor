@@ -1,0 +1,54 @@
+﻿@page "/weatherForecasts"
+
+@using BlazorWeather.Domain.Models
+@using BlazorWeather.Domain.Interfaces
+@inject IWeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates weather in my favorite cities.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Clouds</th>
+                <th>Humidity</th>
+                <th>Wind (m/s)</th>
+                <th>Pressure (hpa)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.City</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Clouds</td>
+                    <td>@forecast.Humidity</td>
+                    <td>@forecast.WindSpeed</td>
+                    <td>@forecast.Pressure</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var myFavoriteCities = new[] { "Moscow", "Nizhniy Tagil", "Prague", "Venice", "Kyoto"};
+        forecasts = await ForecastService.GetForecastsAsync(myFavoriteCities);
+    }
+}

@@ -1,7 +1,7 @@
-using BlazorWeather.Data.DataSources.OpenWeatherMapApi;
-using BlazorWeather.Domain.OpenWeatherMapApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+
+using BlazorWeather.Domain.OpenWeatherMapApi;
 
 namespace BlazorWeather.IntegrationTests
 {
@@ -11,10 +11,10 @@ namespace BlazorWeather.IntegrationTests
         [TestMethod]
         public async Task GetWeatherForecasts()
         {
-            var dataSource = new ApiDataSource("e9a5eecb42d607c03d1c84867c26d193", "http://api.openweathermap.org/");
-            var service = new OpenWeatherMapApiService(dataSource);
+            var service = new OpenWeatherMapApiService();
+            var myFavoriteCities = new[] { "Moscow", "Nizhniy Tagil", "Prague", "Venice", "Kyoto"};
 
-            var weatherForecasts = await service.GetForecastsAsync();
+            var weatherForecasts = await service.GetForecastsAsync(myFavoriteCities);
 
             Assert.IsTrue(weatherForecasts.Length > 0);
         }
