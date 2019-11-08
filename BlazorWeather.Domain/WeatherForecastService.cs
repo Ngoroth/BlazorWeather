@@ -1,10 +1,8 @@
-﻿using BlazorWeather.Domain.Interfaces;
-using BlazorWeather.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using BlazorWeather.Domain.Interfaces;
+using BlazorWeather.Domain.Models;
 
 namespace BlazorWeather.Domain
 {
@@ -22,14 +20,14 @@ namespace BlazorWeather.Domain
 
         public async Task<WeatherForecast[]> GetForecastsAsync()
         {
-            var forecasts = new List<WeatherForecast>();
+            var forecastTasks = new List<Task<WeatherForecast>>();
 
             foreach (var city in this.myFavoriteCities)
             {
-                forecasts.Add(await this.weatherForecastRepository.GetWeatherForecastByCityNameAsync(city));
+                forecastTasks.Add(this.weatherForecastRepository.GetWeatherForecastByCityNameAsync(city));
             }
 
-            return forecasts.ToArray();
+            return await Task.WhenAll<WeatherForecast>();
         }
     }
 }
