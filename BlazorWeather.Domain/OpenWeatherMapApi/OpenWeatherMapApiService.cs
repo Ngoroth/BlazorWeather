@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using BlazorWeather.Data.DataSources.OpenWeatherMapApi;
-using BlazorWeather.Data.DataSources.OpenWeatherMapApi.Models.Responses;
 using BlazorWeather.Domain.Interfaces;
 using BlazorWeather.Domain.Models;
 

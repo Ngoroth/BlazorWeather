@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace BlazorWeather.Data.DataSources.OpenWeatherMapApi.Models.Responses
 {
@@ -23,5 +22,8 @@ namespace BlazorWeather.Data.DataSources.OpenWeatherMapApi.Models.Responses
 
         [JsonProperty("dt")]
         public long DateUtc { get; set; }
+
+        [JsonProperty("sys")]
+        public SystemData System { get; set; }
     }
 }

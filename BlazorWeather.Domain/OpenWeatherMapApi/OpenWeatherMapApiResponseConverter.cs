@@ -10,13 +10,13 @@ namespace BlazorWeather.Domain.OpenWeatherMapApi
         {
             return new WeatherForecast
             {
-                City = response.CityName,
-                Clouds = response.Clouds.Cloudiness,
-                Date = DateTime.FromFileTimeUtc(response.DateUtc),
-                Humidity = response.Main.Humidity,
-                Pressure = response.Main.AtmosphericPressure,
-                TemperatureC = (int)response.Main.Temperature - 273,
-                WindSpeed = (int)response.Wind.Speed
+                City = $"{response.CityName}, {response.System.Country}",
+                Clouds = response.Clouds?.Cloudiness ?? 0,
+                Date = DateTime.FromFileTimeUtc(response?.DateUtc ?? DateTime.Now.ToFileTimeUtc()),
+                Humidity = response.Main?.Humidity ?? 0,
+                Pressure = response.Main?.AtmosphericPressure ?? 0,
+                TemperatureC = (int)(response.Main?.Temperature ?? 0) - 273,
+                WindSpeed = (int)(response.Wind?.Speed ?? 0)
             };
         }
     }

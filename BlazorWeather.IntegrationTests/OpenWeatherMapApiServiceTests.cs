@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 
 using BlazorWeather.Domain.OpenWeatherMapApi;
+using System.Linq;
 
 namespace BlazorWeather.IntegrationTests
 {
@@ -17,6 +18,16 @@ namespace BlazorWeather.IntegrationTests
             var weatherForecasts = await service.GetForecastsAsync(myFavoriteCities);
 
             Assert.IsTrue(weatherForecasts.Length > 0);
+        }
+
+        [TestMethod]
+        public async Task GetWeatherForecastWithByWrongCityName()
+        {
+            var service = new OpenWeatherMapApiService();
+
+            var weatherForecast = (await service.GetForecastsAsync("test18")).First();
+
+            Assert.IsTrue(weatherForecast.City == "City not found, Nowhere");
         }
     }
 }

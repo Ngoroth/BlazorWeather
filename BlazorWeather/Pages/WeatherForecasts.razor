@@ -1,7 +1,10 @@
 ﻿@page "/weatherForecasts"
 
+@using System.Linq
+
 @using BlazorWeather.Domain.Models
 @using BlazorWeather.Domain.Interfaces
+@using BlazorWeather.Models
 @inject IWeatherForecastService ForecastService
 
 <h1>Weather forecast</h1>
@@ -43,12 +46,48 @@ else
     </table>
 }
 
+<EditForm Model="searchModel" OnValidSubmit="searchWeatherForecast">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label for="cityName">What is your favorite city?</label>
+        <InputText id="cityName" @bind-Value="searchModel.CityName" />
+    </p>
+    <button type="submit" class="btn btn-primary">Search</button>
+</EditForm>
+
+@if (favoriteCityWeatherForecast != null)
+{
+    <div class="card mx-auto" style="width: 18rem;">
+        <div class="card-header">
+            @favoriteCityWeatherForecast.City
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Current Temperature: @favoriteCityWeatherForecast.TemperatureC °C</li>
+            <li class="list-group-item">Clouds: @favoriteCityWeatherForecast.Clouds %</li>
+            <li class="list-group-item">Humidity: @favoriteCityWeatherForecast.Humidity %</li>
+            <li class="list-group-item">Wind: @favoriteCityWeatherForecast.WindSpeed m/s</li>
+            <li class="list-group-item">Pressure: @favoriteCityWeatherForecast.Pressure hpa</li>
+        </ul>
+    </div>
+}
+
+
 @code {
-    WeatherForecast[] forecasts;
+    private WeatherForecast[] forecasts { get; set; }
+
+    private SearchWeatherForecastModel searchModel { get; set; } = new SearchWeatherForecastModel();
+
+    private WeatherForecast favoriteCityWeatherForecast { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var myFavoriteCities = new[] { "Moscow", "Nizhniy Tagil", "Prague", "Venice", "Kyoto"};
+        var myFavoriteCities = new[] { "Moscow", "Nizhniy Tagil", "Prague", "Venice", "Kyoto" };
         forecasts = await ForecastService.GetForecastsAsync(myFavoriteCities);
+    }
+
+    private async Task searchWeatherForecast()
+    {
+        favoriteCityWeatherForecast = (await ForecastService.GetForecastsAsync(searchModel.CityName)).First();
     }
 }
